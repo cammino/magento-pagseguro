@@ -1,0 +1,47 @@
+<config>
+	<modules>
+		<Cammino_Pagseguro>
+			<version>0.1.0</version>
+			<depends>
+				<Mage_Payment />
+			</depends>
+		</Cammino_Pagseguro>
+	</modules>
+	<global>
+		<models>
+			<pagseguro>
+				<class>Cammino_Pagseguro_Model</class>
+			</pagseguro>
+		</models>
+		<resources>
+			<connection>
+				<use>core_setup</use>
+			</connection>
+		</resources>
+		<blocks>
+			<pagseguro>
+				<class>Cammino_Pagseguro_Block</class>
+			</pagseguro>
+		</blocks>
+	</global>
+	<frontend>
+		<routers>
+			<pagseguro>
+				<use>standard</use>
+				<args>
+					<module>Cammino_Pagseguro</module>
+					<frontName>pagseguro</frontName>
+				</args>
+			</pagseguro>
+		</routers>
+	</frontend>
+	<default>
+		<payment>
+			<pagseguro_standard>
+				<active>0</active>
+				<model>Cammino_Pagseguro_Model_Boleto</model>
+				<title>PagSeguro</title>
+			</pagseguro_standard>
+		</payment>
+	</default>
+</config>
