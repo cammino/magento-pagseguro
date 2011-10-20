@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Cammino_Pagseguro>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Cammino_Pagseguro>
+    </modules>
+</config>
