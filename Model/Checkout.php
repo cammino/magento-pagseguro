@@ -7,6 +7,8 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 	protected $_reference;
 	protected $_sender;
 	protected $_shipping;
+	protected $_email;
+	protected $_token;
 	
 	protected function _construct() {
 		$this->_root = new SimpleXMLElement('<checkout/>');
@@ -55,8 +57,28 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 		$this->_root->reference = $reference;
 	}
 	
+	public function setEmail($email) {
+		$this->_email = $email;
+	}
+	
+	public function setToken($token) {
+		$this->_token = $token;
+	}
+	
 	public function getXML() {
 		return $this->_root->asXML();
+	}
+	
+	public function sendRequest() {
+		$xml = $this->_root->asXML();
+		
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml; charset=ISO-8859-1"));
+		curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
+//		$xml= curl_exec($curl);
+		
 	}
 
 }
