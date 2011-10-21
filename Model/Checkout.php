@@ -25,7 +25,7 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 		$item->addChild('description', $description);
 		$item->addChild('amount', number_format($amount, 2, '.', ''));
 		$item->addChild('quantity', number_format($quantity, 0, '', ''));
-		$item->addChild('weight', number_format($weight, 2, '.', ''));
+		$item->addChild('weight', number_format($weight, 0, '', ''));
 	}
 	
 	public function setSender($name, $email, $phoneCode, $phoneNumber) {
@@ -70,15 +70,17 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 	}
 	
 	public function sendRequest() {
+		$url = "https://ws.pagseguro.uol.com.br/v2/checkout?email=".$this->_email."&token=".$this->_token;
 		$xml = $this->_root->asXML();
 		
 		$curl = curl_init($url);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml; charset=ISO-8859-1"));
+		curl_setopt($curl, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml; charset=utf-8"));
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
-//		$xml= curl_exec($curl);
+		$response = curl_exec($curl);
 		
+		return $response;
 	}
 
 }
