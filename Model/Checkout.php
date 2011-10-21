@@ -9,6 +9,8 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 	protected $_shipping;
 	protected $_email;
 	protected $_token;
+	protected $_errors;
+	protected $_paymentCode;
 	
 	protected function _construct() {
 		$this->_root = new SimpleXMLElement('<checkout/>');
@@ -17,6 +19,7 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 		$this->_reference = $this->_root->addChild('reference');
 		$this->_sender = $this->_root->addChild('sender');
 		$this->_shipping = $this->_root->addChild('shipping');
+		$this->_errors = array();
 	}
 	
 	public function addItem($id, $description, $amount, $quantity, $weight) {
@@ -80,7 +83,36 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
 		$response = curl_exec($curl);
 		
-		return $response;
+		return $this->processResponse($response);
+	}
+	
+	public function processResponse($response) {
+		$xml = simplexml_load_string($response);
+		$this->processErrors($xml);
+		
+		if (count($this->_errors) > 0) {
+			return false;
+		} else {
+			$this->_paymentCode = strval($xml->code);
+			return true;
+		}
+	}
+	
+	public function paymentUrl() {
+		return "https://pagseguro.uol.com.br/v2/checkout/payment.html?code=" . $this->_paymentCode;
+	}
+	
+	public function processErrors($xml) {
+		$_xml = clone $xml;
+		$_xml = $_xml->xpath("/errors");
+		
+		foreach($_xml as $node) {
+			array_push($this->_errors, strval($node->error->message));
+		}
+	}
+	
+	public function getErrors() {
+		return $this->_errors;
 	}
 
 }

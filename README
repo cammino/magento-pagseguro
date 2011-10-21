@@ -3,3 +3,10 @@ INSTALL
 mkdir app/code/community/Cammino
 git submodule add git@github.com:mferracioli/magento-pagseguro.git app/code/community/Cammino/Pagseguro
 cp app/code/community/Cammino/Pagseguro/Cammino_Pagseguro.xml app/etc/modules/
+
+TODO
+
+- Include email and token in module settings
+- Create receipt page
+- Implement errors
+- Implement shipping
