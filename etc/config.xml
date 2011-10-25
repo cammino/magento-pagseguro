@@ -13,16 +13,16 @@
 				<class>Cammino_Pagseguro_Model</class>
 			</pagseguro>
 		</models>
-		<resources>
-			<connection>
-				<use>core_setup</use>
-			</connection>
-		</resources>
 		<blocks>
 			<pagseguro>
 				<class>Cammino_Pagseguro_Block</class>
 			</pagseguro>
 		</blocks>
+		<resources>
+			<connection>
+				<use>core_setup</use>
+			</connection>
+		</resources>
 	</global>
 	<frontend>
 		<routers>
@@ -39,7 +39,7 @@
 		<payment>
 			<pagseguro_standard>
 				<active>0</active>
-				<model>Cammino_Pagseguro_Model_Boleto</model>
+				<model>Cammino_Pagseguro_Model_Standard</model>
 				<title>PagSeguro</title>
 			</pagseguro_standard>
 		</payment>

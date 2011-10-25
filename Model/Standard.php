@@ -3,8 +3,8 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 	
 	protected $_canAuthorize = false;
 	protected $_canCapture = false;
-	protected $_code = 'pagseguro_standard';
-	protected $_formBlockType = 'pagseguro/form';
+	protected $_code = "pagseguro_standard";
+//	protected $_formBlockType = "pagseguro/form";
 	
 	// public function assignData($data) {
 	// 	$addata = new Varien_Object;
@@ -18,10 +18,10 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		return $this->getUrl();
 	}
 	
-	private function getUrl() {
+	public function getUrl() {
 		$order = Mage::getModel("sales/order");
-		$checkout = Mage::getSingleton('pagseguro/checkout');
-		$session = Mage::getSingleton('checkout/session');
+		$checkout = Mage::getSingleton("pagseguro/checkout");
+		$session = Mage::getSingleton("checkout/session");
 		$quote = $session->getQuote();
 		
 		$order->loadByIncrementId($session->getLastRealOrderId());
@@ -31,21 +31,23 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$checkout->setCurrency("BRL");
 		$checkout->setReference($order->getRealOrderId());
 		
-		$this->addItems($checkout, $quote);
+		$this->addItems($checkout, $order);
 		$this->setSender($checkout);
-		$this->setShipping($checkout);
-
-		$checkout->sendRequest();
+		$this->setShipping($checkout, $order);
+		
+//		var_dump($order->getShippingAddress());
+		
+//		$checkout->sendRequest();
 		
 		return $checkout->paymentUrl();
 	}
 	
-	private function addItems($checkout, $quote) {
-		foreach($quote->getAllVisibleItems() as $item) {
+	private function addItems($checkout, $order) {
+		foreach($order->getAllItems() as $item) {
 			$sku = $item->getSku();
 			$name = $item->getName();
-			$price = 100.00;
-			$quantity = $item->getQty();
+			$price = $item->getPrice;
+			$quantity = $item->getQtyToInvoice();
 			$weight = 100.00;
 			
 			$checkout->addItem($sku, $name, $price, $quantity, $weight);
@@ -61,19 +63,25 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$checkout->setSender($name, $email, $phoneCode, $phoneNumber);
 	}
 	
-	private function setShipping($checkout, $quote) {
-		$shippingAddress = $quote->getShippingAddress();
+	private function setShipping($checkout, $order) {
+		$shippingAddress = $order->getShippingAddress();
+		$regionId = $shippingAddress->getRegionId();
 		
-		$address1 = $shippingAddress->getStreet(1);
-		$address2 = $shippingAddress->getStreet(2);
-		$address3 = $shippingAddress->getStreet(3);
-		$address4 = $shippingAddress->getStreet(4);
-		$postcode = preg_replace("@[^\d]@", "", $shippingAddress->getPostcode());
-		$city = $shippingAddress->getCity();
-		$state = $shippingAddress->getState();
-		$country = $shippingAddress->getCountry(); // BRA
+		$regionName = Mage::getModel("directory/region")->load($regionId)->getName();
 		
-		$checkout->setShipping(1, $address1, $address2, $address3, $address4, $postcode, $city, $state, "BRA");
+		var_dump($regionName);
+
+		// var_dump($regions);
+		
+		// $address1 = $shippingAddress->getStreet(1);
+		// $address2 = $shippingAddress->getStreet(2);
+		// $address3 = $shippingAddress->getStreet(3);
+		// $address4 = $shippingAddress->getStreet(4);
+		// $postcode = preg_replace("@[^\d]@", "", $shippingAddress->getPostcode());
+		// $city = $shippingAddress->getCity();
+		// $country = $shippingAddress->getCountry(); // BRA
+		
+		// $checkout->setShipping(1, $address1, $address2, $address3, $address4, $postcode, $city, $state, "BRA");
 	}
 }
 ?>
