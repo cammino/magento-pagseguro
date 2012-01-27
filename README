@@ -6,7 +6,5 @@ cp app/code/community/Cammino/Pagseguro/Cammino_Pagseguro.xml app/etc/modules/
 
 TODO
 
-- Include email and token in module settings
 - Create receipt page
 - Implement errors
-- Implement shipping

@@ -2,16 +2,23 @@
 class Cammino_Pagseguro_Block_Pay extends Mage_Payment_Block_Form {
 	
 	protected function _construct() {
-//		$this->setTemplate('pagseguro/pay.phtml');
+		$this->setTemplate('pagseguro/pay.phtml');
 		parent::_construct();
 	}
-
-	protected function _toHtml() {
+	
+	public function getPaymentUrl() {
 		$pay = Mage::getSingleton('pagseguro/standard');
-		$url = $pay->getUrl();
+		$session = Mage::getSingleton("checkout/session");
+		$orderId = $session->getLastRealOrderId();
+//		$orderId = $this->getRequest()->getParam('id');
+		
+		$url = $pay->getPaymentUrl($orderId);
 
 		return $url;
 	}
+
+//	protected function _toHtml() {
+//	}
 	
 }
 ?>
