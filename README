@@ -1,4 +1,4 @@
-INSTALL
+INSTALL (for git)
 
 mkdir app/code/community/Cammino
 git submodule add git@github.com:mferracioli/magento-pagseguro.git app/code/community/Cammino/Pagseguro
