@@ -4,11 +4,9 @@ class Cammino_Pagseguro_StandardController extends Mage_Core_Controller_Front_Ac
 	public function receiptAction() {
 		$block = $this->getLayout()->createBlock('pagseguro/receipt');
 		$this->loadLayout();
+		$this->analyticsTrack();
 		$this->getLayout()->getBlock('root')->setTemplate('page/1column.phtml');
 		$this->getLayout()->getBlock('content')->append($block);
-
-		$this->analyticsTrack();
-
 		$this->renderLayout();
 	}
 	
@@ -25,9 +23,12 @@ class Cammino_Pagseguro_StandardController extends Mage_Core_Controller_Front_Ac
 	}
 	
 	private function analyticsTrack() {
-		$session = Mage::getSingleton('checkout/session');
-		$order = Mage::getModel("sales/order");
+		//$session = Mage::getSingleton('checkout/session');
+		//$order = Mage::getModel("sales/order");
+
+		$session = $this->getCheckout();
 		$orderId = $session->getLastOrderId();
+
 		Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($orderId)));
 	}
 
