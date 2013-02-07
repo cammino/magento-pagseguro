@@ -3,7 +3,10 @@ class Cammino_Pagseguro_StandardController extends Mage_Core_Controller_Front_Ac
 	
 	public function receiptAction() {
 		$block = $this->getLayout()->createBlock('pagseguro/receipt');
-		$this->renderBlock($block);
+		$this->loadLayout();
+		$this->getLayout()->getBlock('root')->setTemplate('page/1column.phtml');
+		$this->getLayout()->getBlock('content')->append($block);
+		$this->renderLayout();
 	}
 	
 	public function payAction() {

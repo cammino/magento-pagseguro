@@ -4,6 +4,7 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 	protected $_canAuthorize = false;
 	protected $_canCapture = false;
 	protected $_code = "pagseguro_standard";
+	protected $_errors = array();
 //	protected $_formBlockType = "pagseguro/form";
 	
 //	public function assignData($data) {
@@ -36,12 +37,19 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$this->setExtraAmount($checkout, $order);
 		
 		$checkout->sendRequest();
+		$_errors = $checkout->getErrors();
 		
 		return $checkout->paymentUrl();
 	}
+
+	public function getErrors()
+	{
+		return $_errors;
+	}
 	
 	private function addItems($checkout, $order) {
-		foreach($order->getAllItems() as $item) {
+		foreach($order->getItemsCollection(array(), true) as $item) {
+		//foreach($order->getAllItems() as $item) {
 			$sku = $item->getSku();
 			$name = $item->getName();
 			$price = $item->getPrice();
