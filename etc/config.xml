@@ -34,16 +34,6 @@
 				</args>
 			</pagseguro>
 		</routers>
-        <events>
-			<checkout_onepage_controller_success_action>
-				<observers>
-					<googleanalytics_order_success>
-						<class>googleanalytics/observer</class>
-						<method>setGoogleAnalyticsOnOrderSuccessPageView</method>
-					</googleanalytics_order_success>
-				</observers>
-			</checkout_onepage_controller_success_action>
-		</events>
 	</frontend>
 	<default>
 		<payment>
