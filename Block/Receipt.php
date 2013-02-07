@@ -10,7 +10,7 @@ class Cammino_Pagseguro_Block_Receipt extends Mage_Payment_Block_Form {
 		$this->_orderId = $order->getRealOrderId();
 		$this->setTemplate("pagseguro/receipt.phtml");
 
-		Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($this->_orderId)));
+		//Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($this->_orderId)));
 
 		parent::_construct();
 	}
