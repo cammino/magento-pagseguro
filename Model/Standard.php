@@ -22,9 +22,11 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 	public function getPaymentUrl($orderId) {
 		$order = Mage::getModel("sales/order");
 		$checkout = Mage::getSingleton("pagseguro/checkout");
-		
-//		$order->loadByIncrementId($session->getLastRealOrderId());
 		$order->loadByIncrementId($orderId);
+
+		$orderData = $order->getData();
+		$customer = Mage::getModel("customer/customer");
+		$customer->load($orderData['customer_id']);
 		
 		$checkout->setEmail($this->getConfigData("email"));
 		$checkout->setToken($this->getConfigData("token"));
@@ -32,7 +34,7 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$checkout->setReference($order->getRealOrderId());
 		
 		$this->addItems($checkout, $order);
-		$this->setSender($checkout);
+		$this->setSender($checkout, $customer);
 		$this->setShipping($checkout, $order);
 		$this->setExtraAmount($checkout, $order);
 		
@@ -49,7 +51,6 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 	
 	private function addItems($checkout, $order) {
 		foreach($order->getItemsCollection(array(), true) as $item) {
-		//foreach($order->getAllItems() as $item) {
 			$sku = $item->getSku();
 			$name = $item->getName();
 			$price = $item->getPrice();
@@ -60,9 +61,12 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		}
 	}
 	
-	private function setSender($checkout) {
-		$name = $this->getConfigData("sender_name");
-		$email = $this->getConfigData("email");
+	private function setSender($checkout, $customer) {
+
+		$customerData = $customer->getData();
+
+		$name = $customerData["firstname"] . " " . $customerData["lastname"];
+		$email = $customerData["email"];
 		$phoneCode = $this->getConfigData("phone_code");
 		$phoneNumber = $this->getConfigData("phone_number");
 		

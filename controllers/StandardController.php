@@ -26,12 +26,17 @@ class Cammino_Pagseguro_StandardController extends Mage_Core_Controller_Front_Ac
 		$session = Mage::getSingleton('checkout/session');
 		$orderId = $session->getLastOrderId();
 		Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($orderId)));
+
 	}
-	
-	private function analyticsTrack() {
-		$session = Mage::getSingleton('checkout/session');
-		$orderId = $session->getLastOrderId();
-		Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($orderId)));
+
+	public function returnAction() {
+		//if ($this->getRequest()->isPost()) {
+			//$post = $this->getRequest()->getPost();
+			//var_dump($post);
+		//}
+
+		//$this->loadLayout();
+		//$this->renderLayout();
 	}
 
 }
