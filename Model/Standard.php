@@ -72,7 +72,7 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$phoneCode = $this->getConfigData("phone_code");
 		$phoneNumber = $this->getConfigData("phone_number");
 
-		if (strlen($name) > 100) $name = substr($name, 0, 99);
+		if (strlen($name) > 50) $name = substr($name, 0, 50);
 		
 		$checkout->setSender($name, $email, $phoneCode, $phoneNumber);
 	}
