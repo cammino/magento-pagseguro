@@ -56,6 +56,8 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 			$price = $item->getPrice();
 			$quantity = $item->getQtyToInvoice();
 			$weight = 100.00;
+
+			if ($quantity == 0) $quantity = 1;
 			
 			$checkout->addItem($sku, $name, $price, $quantity, $weight);
 		}
@@ -69,6 +71,8 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$email = $customerData["email"];
 		$phoneCode = $this->getConfigData("phone_code");
 		$phoneNumber = $this->getConfigData("phone_number");
+
+		if (strlen($name) > 100) $name = substr($name, 0, 99);
 		
 		$checkout->setSender($name, $email, $phoneCode, $phoneNumber);
 	}
