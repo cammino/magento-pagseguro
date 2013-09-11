@@ -12,10 +12,13 @@ class Cammino_Pagseguro_StandardController extends Mage_Core_Controller_Front_Ac
 	
 	public function payAction() {
 		$block = $this->getLayout()->createBlock('pagseguro/pay');
+		$adwordsBlock = $this->getLayout()->createBlock("adwords/tracker");
+
 		$this->loadLayout();
 		$this->analyticsTrack();
 		$this->getLayout()->getBlock('root')->setTemplate('page/1column.phtml');
 		$this->getLayout()->getBlock('content')->append($block);
+		$this->getLayout()->getBlock('content')->append($adwordsBlock);
 		$this->renderLayout();
 	}
 	
