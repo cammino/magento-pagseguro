@@ -10,10 +10,7 @@ class Cammino_Pagseguro_Block_Pay extends Mage_Payment_Block_Form {
 		$pay = Mage::getSingleton('pagseguro/standard');
 		$session = Mage::getSingleton("checkout/session");
 
-		var_dump($this->getRequest()->getParam("id"));
-
-		//$orderId = isset($this->getRequest()->getParam("id")) ? $this->getRequest()->getParam("id") $session->getLastRealOrderId();
-		$orderId = $session->getLastRealOrderId();
+		$orderId = (trim($this->getRequest()->getParam("id")) == "") ? $session->getLastRealOrderId() : $this->getRequest()->getParam("id");
 
 		$url = $pay->getPaymentUrl($orderId);
 
