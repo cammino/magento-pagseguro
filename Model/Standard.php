@@ -67,10 +67,11 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 
 		$customerData = $customer->getData();
 
-		$name = $customerData["firstname"] . " " . $customerData["lastname"];
-		$email = $customerData["email"];
-		$phoneCode = $this->getConfigData("phone_code");
-		$phoneNumber = $this->getConfigData("phone_number");
+		$name = trim($customerData["firstname"]) . " " . trim($customerData["lastname"]);
+		$name = str_replace("  ",  " ",	$name);
+		$email = trim($customerData["email"]);
+		$phoneCode = trim($this->getConfigData("phone_code"));
+		$phoneNumber = trim($this->getConfigData("phone_number"));
 
 		if (strlen($name) > 50) $name = substr($name, 0, 50);
 		
