@@ -12,7 +12,8 @@ class Cammino_Pagseguro_Block_Pay extends Mage_Payment_Block_Form {
 
 		var_dump($this->getRequest()->getParam("id"));
 
-		$orderId = isset($this->getRequest()->getParam("id")) ? $this->getRequest()->getParam("id") $session->getLastRealOrderId();
+		//$orderId = isset($this->getRequest()->getParam("id")) ? $this->getRequest()->getParam("id") $session->getLastRealOrderId();
+		$orderId = $session->getLastRealOrderId();
 
 		$url = $pay->getPaymentUrl($orderId);
 
