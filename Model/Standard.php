@@ -91,7 +91,7 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$city = $shippingAddress->getCity();
 		$country = "BRA";
 		
-		$checkout->setShipping(1, $address1, $address2, $address3, $address4, $postcode, $city, $state, $country);
+		$checkout->setShipping(3, $address1, $address2, $address3, $address4, $postcode, $city, $state, $country);
 	}
 	
 	private function getRegionName($regionId) {

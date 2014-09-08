@@ -24,31 +24,33 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 	
 	public function addItem($id, $description, $amount, $quantity, $weight) {
 		$item = $this->_items->addChild('item');
-		$item->addChild('id', $id);
-		$item->addChild('description', $description);
+		$item->addChild('id', substr(strval($id), 0, 100));
+		$item->addChild('description', substr(strval($description), 0, 100));
 		$item->addChild('amount', number_format($amount, 2, '.', ''));
 		$item->addChild('quantity', number_format($quantity, 0, '', ''));
 		$item->addChild('weight', number_format($weight, 0, '', ''));
 	}
 	
 	public function setSender($name, $email, $phoneCode, $phoneNumber) {
-		$this->_sender->addChild('name', $name);
+		$this->_sender->addChild('name', substr(strval($name), 0, 50));
 		$this->_sender->addChild('email', $email);
 		$phone = $this->_sender->addChild('phone');
-		$phone->addChild('areaCode', $phoneCode);
-		$phone->addChild('number', $phoneNumber);
+		$phone->addChild('areaCode', substr(preg_replace('/[^0-9]/', '', strval($phoneCode)), 0, 2));
+		$phone->addChild('number', substr(preg_replace('/[^0-9]/', '', strval($phoneNumber)), 0, 9));
+
+
 	}
 	
 	public function setShipping($type, $street, $number, $complement, $district, $postalCode, $city, $state, $country) {
 		$this->_shipping->addChild('type', $type);
 		$address = $this->_shipping->addChild('address');
-		$address->addChild('street', $street);
-		$address->addChild('number', $number);
-		$address->addChild('complement', $complement);
-		$address->addChild('district', $district);
-		$address->addChild('postalCode', $postalCode);
-		$address->addChild('city', $city);
-		$address->addChild('state', $state);
+		$address->addChild('street', substr(strval($street), 0, 80));
+		$address->addChild('number', substr(strval($number), 0, 20));
+		$address->addChild('complement', substr(strval($complement), 0, 40));
+		$address->addChild('district', substr(strval($district), 0, 60));
+		$address->addChild('postalCode', substr(preg_replace('/[^0-9]/', '', strval($postalCode)), 0, 8));
+		$address->addChild('city', substr(strval($city), 0, 60));
+		$address->addChild('state', substr(strval($state), 0, 2));
 		$address->addChild('country', $country);
 	}
 	
@@ -57,7 +59,7 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 	}
 	
 	public function setReference($reference) {
-		$this->_root->reference = $reference;
+		$this->_root->reference = substr(strval($reference), 0, 200);
 	}
 	
 	public function setEmail($email) {
