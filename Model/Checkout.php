@@ -71,9 +71,14 @@ class Cammino_Pagseguro_Model_Checkout extends Mage_Core_Model_Abstract {
 	}
 	
 	public function setExtraAmount($extraAmount) {
+		//$sign = ($extraAmount < 0) ? "-" : "";
 		$this->_root->addChild('extraAmount', number_format($extraAmount, 2, '.', ''));
 	}
 	
+	public function setShippingCost($cost) {
+		$this->_shipping->addChild('cost', number_format($cost, 2, '.', ''));
+	}
+
 	public function getXML() {
 		return $this->_root->asXML();
 	}

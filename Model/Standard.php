@@ -37,6 +37,7 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 		$this->setSender($checkout, $customer);
 		$this->setShipping($checkout, $order);
 		$this->setExtraAmount($checkout, $order);
+		$this->setShippingCost($checkout, $order);
 		
 		$checkout->sendRequest();
 		$_errors = $checkout->getErrors();
@@ -106,8 +107,13 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 	}
 	
 	private function setExtraAmount($checkout, $order) {
+		$discountAmount = floatval($order->getDiscountAmount());
+		$checkout->setExtraAmount($discountAmount);
+	}
+
+	private function setShippingCost($checkout, $order) {
 		$shippingAmount = floatval($order->shipping_amount);
-		$checkout->setExtraAmount($shippingAmount);
+		$checkout->setShippingCost($shippingAmount);
 	}
 }
 ?>
