@@ -5,7 +5,7 @@ class Cammino_Pagseguro_Model_Standard extends Mage_Payment_Model_Method_Abstrac
 	protected $_canCapture = false;
 	protected $_code = "pagseguro_standard";
 	protected $_errors = array();
-//	protected $_formBlockType = "pagseguro/form";
+	protected $_formBlockType = "pagseguro/form";
 	
 //	public function assignData($data) {
 //		$addata = new Varien_Object;
